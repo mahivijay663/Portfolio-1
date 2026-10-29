@@ -1,0 +1,370 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="LaunchProfile helps students and freshers build professional resumes, LinkedIn profiles, portfolios, and interview-ready career content.">
+  <title>LaunchProfile | Build Your Profile. Launch Your Career.</title>
+  <style>
+    :root {
+      --navy: #18233f;
+      --blue: #4357e8;
+      --blue-dark: #3042c8;
+      --ink: #20263a;
+      --muted: #687086;
+      --paper: #ffffff;
+      --soft: #f5f7ff;
+      --line: #e6e9f3;
+      --mint: #dff8ef;
+      --peach: #fff0e8;
+      --shadow: 0 18px 50px rgba(24,35,63,.10);
+      --radius: 22px;
+    }
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      color: var(--ink); background: var(--paper); line-height: 1.6;
+    }
+    a { color: inherit; text-decoration: none; }
+    button, input, select, textarea { font: inherit; }
+    button, a { -webkit-tap-highlight-color: transparent; }
+    .container { width: min(1120px, calc(100% - 40px)); margin: 0 auto; }
+    .announcement { background: var(--navy); color: white; text-align: center; font-size: .84rem; padding: 9px 16px; }
+    .announcement span { color: #b9c1ff; font-weight: 700; }
+    header { position: sticky; top: 0; z-index: 10; background: rgba(255,255,255,.92); backdrop-filter: blur(14px); border-bottom: 1px solid rgba(230,233,243,.8); }
+    .nav { min-height: 76px; display: flex; align-items: center; justify-content: space-between; gap: 24px; }
+    .brand { display: inline-flex; align-items: center; gap: 10px; font-weight: 850; font-size: 1.25rem; letter-spacing: -.04em; color: var(--navy); }
+    .brand-mark { display: grid; place-items: center; width: 37px; height: 37px; border-radius: 12px; background: var(--blue); color: white; font-weight: 900; box-shadow: 0 7px 16px rgba(67,87,232,.25); }
+    .nav-links { display: flex; align-items: center; gap: 27px; color: #555d72; font-size: .94rem; font-weight: 600; }
+    .nav-links a:hover { color: var(--blue); }
+    .btn { border: 0; border-radius: 12px; padding: 12px 18px; display: inline-flex; justify-content: center; align-items: center; gap: 9px; font-weight: 750; cursor: pointer; transition: transform .2s, background .2s, box-shadow .2s; }
+    .btn:hover { transform: translateY(-2px); }
+    .btn-primary { background: var(--blue); color: white; box-shadow: 0 9px 20px rgba(67,87,232,.22); }
+    .btn-primary:hover { background: var(--blue-dark); }
+    .btn-outline { border: 1px solid var(--line); background: white; color: var(--navy); }
+    .menu-toggle { display: none; border: 1px solid var(--line); background: white; border-radius: 10px; padding: 8px 11px; cursor: pointer; }
+    .hero { position: relative; overflow: hidden; padding: 86px 0 76px; background: radial-gradient(circle at 88% 15%, #e8ebff 0, transparent 28%), radial-gradient(circle at 5% 85%, #e8faf4 0, transparent 24%), #fbfcff; }
+    .hero-grid { display: grid; grid-template-columns: 1.05fr .95fr; gap: 58px; align-items: center; }
+    .eyebrow { display: inline-flex; gap: 8px; align-items: center; padding: 7px 12px; background: #eef0ff; color: var(--blue-dark); border-radius: 99px; font-size: .81rem; font-weight: 800; margin-bottom: 22px; }
+    .eyebrow-dot { width: 7px; height: 7px; border-radius: 50%; background: #45bf92; }
+    h1 { color: var(--navy); font-size: clamp(2.65rem, 5.2vw, 4.6rem); line-height: 1.04; letter-spacing: -.065em; margin-bottom: 23px; }
+    h1 .accent { color: var(--blue); }
+    .hero-copy { color: var(--muted); font-size: 1.1rem; max-width: 540px; margin-bottom: 28px; }
+    .hero-actions { display: flex; flex-wrap: wrap; gap: 12px; margin-bottom: 27px; }
+    .micro-proof { display: flex; align-items: center; gap: 10px; color: #687086; font-size: .88rem; }
+    .avatar-stack { display: flex; }
+    .avatar { display: grid; place-items: center; width: 29px; height: 29px; margin-right: -7px; border: 2px solid white; border-radius: 50%; font-size: .72rem; font-weight: 800; color: var(--navy); background: #dce3ff; }
+    .avatar:nth-child(2) { background: #ffe0d1; }.avatar:nth-child(3) { background: #d8f4e8; }
+    .hero-visual { position: relative; min-height: 430px; display: grid; place-items: center; }
+    .orbit { position: absolute; width: 390px; height: 390px; border-radius: 50%; border: 1px dashed #c9cffc; }
+    .profile-card { position: relative; z-index: 1; width: min(350px, 88%); padding: 24px; border-radius: 24px; background: white; border: 1px solid #edf0f8; box-shadow: 0 30px 70px rgba(24,35,63,.16); transform: rotate(-2deg); }
+    .profile-top { display: flex; align-items: center; gap: 13px; padding-bottom: 20px; border-bottom: 1px solid var(--line); }
+    .profile-avatar { width: 54px; height: 54px; border-radius: 18px; display: grid; place-items: center; background: linear-gradient(135deg,#d9e0ff,#b8c3ff); color: #3443a8; font-size: 1.35rem; font-weight: 900; }
+    .profile-top h3 { font-size: 1rem; color: var(--navy); }.profile-top p { font-size: .8rem; color: var(--muted); }
+    .status { margin-left: auto; color: #13865f; background: #e2f9ef; border-radius: 99px; font-size: .7rem; font-weight: 800; padding: 5px 8px; }
+    .profile-label { color: #8a91a5; text-transform: uppercase; font-size: .68rem; font-weight: 850; letter-spacing: .12em; margin: 19px 0 8px; }
+    .skill-pills { display: flex; flex-wrap: wrap; gap: 7px; }.skill-pills span { padding: 6px 10px; border-radius: 8px; background: #f2f4ff; color: #4b56a6; font-size: .75rem; font-weight: 700; }
+    .progress-row { display: flex; justify-content: space-between; color: #596176; font-size: .78rem; font-weight: 700; margin: 19px 0 7px; }
+    .progress { height: 8px; border-radius: 99px; background: #edf0f7; overflow: hidden; }.progress span { display: block; height: 100%; width: 82%; background: linear-gradient(90deg,#4357e8,#8b96ff); border-radius: inherit; }
+    .floating-chip { position: absolute; z-index: 2; display: flex; gap: 10px; align-items: center; padding: 13px 16px; border-radius: 15px; background: white; box-shadow: var(--shadow); font-size: .82rem; font-weight: 800; color: var(--navy); }
+    .floating-chip .chip-icon { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 10px; background: var(--mint); font-size: 1rem; }
+    .chip-one { top: 35px; right: -4px; }.chip-two { bottom: 38px; left: -3px; }.chip-two .chip-icon { background: var(--peach); }
+    .section { padding: 84px 0; }
+    .section-soft { background: var(--soft); }
+    .section-heading { text-align: center; max-width: 680px; margin: 0 auto 44px; }
+    .kicker { color: var(--blue); font-size: .79rem; font-weight: 850; letter-spacing: .14em; text-transform: uppercase; margin-bottom: 11px; }
+    h2 { color: var(--navy); font-size: clamp(2rem, 3.5vw, 2.85rem); letter-spacing: -.05em; line-height: 1.14; margin-bottom: 14px; }
+    .section-heading p, .muted { color: var(--muted); }
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 18px; }
+    .feature-card { background: white; border: 1px solid var(--line); border-radius: var(--radius); padding: 27px; transition: transform .2s, box-shadow .2s; }
+    .feature-card:hover { transform: translateY(-4px); box-shadow: var(--shadow); }
+    .feature-icon { display: grid; place-items: center; width: 49px; height: 49px; border-radius: 15px; background: #eef0ff; color: var(--blue); font-size: 1.35rem; margin-bottom: 20px; }
+    .feature-card:nth-child(2) .feature-icon { background: var(--mint); color: #12835d; }
+    .feature-card:nth-child(3) .feature-icon { background: var(--peach); color: #c56a36; }
+    .feature-card:nth-child(4) .feature-icon { background: #f5e8ff; color: #8b4ec2; }
+    .feature-card:nth-child(5) .feature-icon { background: #e2f4ff; color: #287aa5; }
+    .feature-card:nth-child(6) .feature-icon { background: #fff2c9; color: #9b7514; }
+    .feature-card h3 { color: var(--navy); font-size: 1.08rem; margin-bottom: 8px; }.feature-card p { color: var(--muted); font-size: .92rem; }
+    .steps-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 28px; counter-reset: steps; }
+    .step { position: relative; padding: 0 8px; }.step-number { display: grid; place-items: center; width: 50px; height: 50px; border-radius: 16px; background: var(--navy); color: white; font-size: 1.1rem; font-weight: 850; margin-bottom: 20px; }
+    .step h3 { color: var(--navy); margin-bottom: 8px; }.step p { color: var(--muted); font-size: .94rem; }
+    .step:not(:last-child)::after { content: "→"; position: absolute; top: 7px; right: -8px; font-size: 1.6rem; color: #a5add0; }
+    .builder-layout { display: grid; grid-template-columns: .8fr 1.2fr; gap: 40px; align-items: start; }
+    .builder-intro { position: sticky; top: 110px; }.builder-intro p { color: var(--muted); margin: 15px 0 22px; }
+    .check-list { list-style: none; display: grid; gap: 12px; }.check-list li { display: flex; align-items: start; gap: 10px; color: #4d566d; font-size: .93rem; }.check { color: #13966a; font-weight: 900; }
+    .builder-card { background: white; border: 1px solid var(--line); border-radius: 24px; padding: 28px; box-shadow: var(--shadow); }
+    .builder-card h3 { color: var(--navy); margin-bottom: 5px; }.builder-card .form-subtitle { color: var(--muted); font-size: .9rem; margin-bottom: 22px; }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 15px; }.field { display: flex; flex-direction: column; gap: 6px; }.field.full { grid-column: 1 / -1; }
+    .field label { color: #454d64; font-size: .83rem; font-weight: 750; }.field input, .field select, .field textarea { width: 100%; border: 1px solid #dfe3ef; border-radius: 11px; background: #fcfcff; padding: 12px 13px; outline: none; color: var(--ink); transition: border .2s, box-shadow .2s; }
+    .field textarea { min-height: 92px; resize: vertical; }.field input:focus, .field select:focus, .field textarea:focus { border-color: #8792f4; box-shadow: 0 0 0 3px #eef0ff; }
+    .builder-card .btn { width: 100%; margin-top: 18px; }.privacy-note { text-align: center; font-size: .76rem; color: #858ca0; margin-top: 11px; }
+    .result { display: none; margin-top: 20px; border-radius: 15px; border: 1px solid #cfeedd; background: #f2fff8; padding: 18px; }.result.visible { display: block; }.result h4 { color: #146746; margin-bottom: 7px; }.result p { white-space: pre-wrap; color: #38564a; font-size: .9rem; }.result-actions { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 13px; }.result-actions .btn { width: auto; margin: 0; }
+    .audience-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }.audience-card { border-radius: 24px; padding: 29px; background: white; border: 1px solid var(--line); }.audience-card h3 { color: var(--navy); margin-bottom: 9px; }.audience-card p { color: var(--muted); font-size: .93rem; margin-bottom: 17px; }.audience-card .tag { display: inline-block; border-radius: 99px; background: #eef0ff; color: var(--blue-dark); padding: 6px 10px; font-size: .75rem; font-weight: 800; margin: 3px 4px 0 0; }
+    .cta { padding: 76px 0; background: var(--navy); color: white; text-align: center; position: relative; overflow: hidden; }.cta::before, .cta::after { content: ""; position: absolute; width: 230px; height: 230px; border: 1px solid rgba(255,255,255,.12); border-radius: 50%; }.cta::before { top: -110px; left: -40px; }.cta::after { bottom: -150px; right: -20px; }
+    .cta h2 { color: white; max-width: 700px; margin: 0 auto 15px; }.cta p { color: #c5cce0; max-width: 600px; margin: 0 auto 26px; }.cta .btn { background: white; color: var(--navy); }
+    footer { padding: 27px 0; border-top: 1px solid var(--line); }.footer-inner { display: flex; justify-content: space-between; gap: 18px; align-items: center; flex-wrap: wrap; }.footer-inner p { color: #7b8295; font-size: .84rem; }.footer-links { display: flex; gap: 18px; color: #606980; font-size: .84rem; }
+    .toast { position: fixed; bottom: 22px; left: 50%; transform: translate(-50%, 20px); opacity: 0; pointer-events: none; background: var(--navy); color: white; border-radius: 12px; padding: 12px 17px; font-size: .9rem; box-shadow: var(--shadow); transition: .25s; z-index: 30; }.toast.show { opacity: 1; transform: translate(-50%,0); }
+    @media (max-width: 900px) {
+      .hero-grid { grid-template-columns: 1fr; gap: 20px; }.hero-copy { max-width: 650px; }.hero-visual { min-height: 390px; }
+      .features-grid { grid-template-columns: repeat(2, 1fr); }.builder-layout { grid-template-columns: 1fr; }.builder-intro { position: static; }.steps-grid { gap: 18px; }
+      .nav-links { gap: 16px; }
+    }
+    @media (max-width: 650px) {
+      .container { width: min(100% - 30px, 1120px); }.announcement { font-size: .76rem; }
+      .nav { min-height: 66px; }.menu-toggle { display: inline-block; }.nav-links { display: none; position: absolute; top: 66px; left: 0; right: 0; padding: 20px; background: white; border-bottom: 1px solid var(--line); flex-direction: column; align-items: stretch; gap: 17px; box-shadow: 0 18px 25px rgba(24,35,63,.07); }.nav-links.open { display: flex; }.nav-links .btn { width: 100%; }
+      .hero { padding: 62px 0 48px; }.hero-visual { min-height: 355px; }.orbit { width: 300px; height: 300px; }.profile-card { padding: 19px; }.chip-one { top: 10px; right: -4px; }.chip-two { bottom: 8px; left: -4px; }.floating-chip { padding: 9px 11px; font-size: .72rem; }
+      .section { padding: 62px 0; }.features-grid, .steps-grid, .audience-grid { grid-template-columns: 1fr; }.step:not(:last-child)::after { content: "↓"; top: auto; bottom: -23px; right: 10px; }.step { padding-bottom: 12px; }
+      .form-grid { grid-template-columns: 1fr; }.field.full { grid-column: auto; }.builder-card { padding: 20px; }.footer-inner { align-items: flex-start; flex-direction: column; }.hero-actions .btn { flex: 1; }
+    }
+  </style>
+</head>
+<body>
+  <div class="announcement">Your next opportunity starts with a stronger profile. <span>Meet LaunchProfile →</span></div>
+  <header>
+    <div class="container nav">
+      <a class="brand" href="#home" aria-label="LaunchProfile home"><span class="brand-mark">L</span>LaunchProfile</a>
+      <button class="menu-toggle" id="menuToggle" aria-label="Toggle navigation" aria-expanded="false">☰</button>
+      <nav class="nav-links" id="navLinks">
+        <a href="#features">What we do</a><a href="#how-it-works">How it works</a><a href="#builder">Try the demo</a>
+        <a href="#builder" class="btn btn-primary">Build my profile <span aria-hidden="true">↗</span></a>
+      </nav>
+    </div>
+  </header>
+
+  <main>
+    <section class="hero" id="home">
+      <div class="container hero-grid">
+        <div>
+          <div class="eyebrow"><span class="eyebrow-dot"></span> Career branding, made simpler</div>
+          <h1>Build your profile.<br><span class="accent">Launch your career.</span></h1>
+          <p class="hero-copy">Turn your education, skills, projects, and experience into a professional story that helps you take your next career step with confidence.</p>
+          <div class="hero-actions">
+            <a class="btn btn-primary" href="#builder">Create my career snapshot <span aria-hidden="true">→</span></a>
+            <a class="btn btn-outline" href="#how-it-works">See how it works</a>
+          </div>
+          <div class="micro-proof">
+            <div class="avatar-stack"><span class="avatar">S</span><span class="avatar">F</span><span class="avatar">G</span></div>
+            <span>Designed for students and freshers — even if you're just starting.</span>
+          </div>
+        </div>
+        <div class="hero-visual" aria-label="Illustration of a professional student profile">
+          <div class="orbit"></div>
+          <div class="floating-chip chip-one"><span class="chip-icon">✦</span><span>Career-ready<br>content</span></div>
+          <div class="profile-card">
+            <div class="profile-top">
+              <div class="profile-avatar">JD</div>
+              <div><h3>Jordan Davis</h3><p>Business Student · Aspiring Marketer</p></div>
+              <span class="status">Growing</span>
+            </div>
+            <div class="profile-label">Professional summary</div>
+            <p style="font-size:.86rem;color:#596176">Curious business student with an interest in digital marketing, creative strategy, and building meaningful brand experiences.</p>
+            <div class="profile-label">Skills snapshot</div>
+            <div class="skill-pills"><span>Canva</span><span>Communication</span><span>Social Media</span><span>Research</span></div>
+            <div class="progress-row"><span>Profile checklist</span><span>82%</span></div>
+            <div class="progress"><span></span></div>
+          </div>
+          <div class="floating-chip chip-two"><span class="chip-icon">✓</span><span>Show your skills.<br>Tell your story.</span></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">One profile, more possibilities</div>
+          <h2>Your career story deserves to stand out.</h2>
+          <p>LaunchProfile brings your career essentials together so you can present yourself clearly, professionally, and consistently.</p>
+        </div>
+        <div class="features-grid">
+          <article class="feature-card"><div class="feature-icon">▤</div><h3>Resume support</h3><p>Organise your education, skills, projects, and experience into a clear, recruiter-friendly resume outline.</p></article>
+          <article class="feature-card"><div class="feature-icon">◎</div><h3>LinkedIn presence</h3><p>Find the right words for your headline, About section, and experience descriptions.</p></article>
+          <article class="feature-card"><div class="feature-icon">▧</div><h3>Portfolio starter</h3><p>Showcase projects, certificates, creative work, and practical examples in one organised story.</p></article>
+          <article class="feature-card"><div class="feature-icon">✎</div><h3>Interview preparation</h3><p>Practise introducing yourself and explaining your skills, goals, and experience with confidence.</p></article>
+          <article class="feature-card"><div class="feature-icon">↗</div><h3>Application content</h3><p>Draft professional introductions, cover-letter points, and messages for job applications.</p></article>
+          <article class="feature-card"><div class="feature-icon">✦</div><h3>AI-assisted guidance</h3><p>Get a helpful starting point for your career content, then review and personalise it in your own voice.</p></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="how-it-works">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Simple by design</div>
+          <h2>From “where do I start?” to “I'm ready.”</h2>
+          <p>You don't need years of experience to communicate your potential. Start with what you already have.</p>
+        </div>
+        <div class="steps-grid">
+          <div class="step"><div class="step-number">01</div><h3>Share your starting point</h3><p>Add your education, strengths, interests, projects, internships, and career goal.</p></div>
+          <div class="step"><div class="step-number">02</div><h3>Shape your story</h3><p>Use structured prompts to turn your details into clear, professional career content.</p></div>
+          <div class="step"><div class="step-number">03</div><h3>Polish and take action</h3><p>Review everything for accuracy, personalise it, and prepare for your next opportunity.</p></div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section" id="builder">
+      <div class="container builder-layout">
+        <div class="builder-intro">
+          <div class="kicker">Try the interactive demo</div>
+          <h2>Your first career snapshot starts here.</h2>
+          <p>Fill in a few details to generate a starter professional summary and a personalised checklist. This demo runs in your browser and does not send your information to a server.</p>
+          <ul class="check-list">
+            <li><span class="check">✓</span><span>Useful for students and first-time job seekers</span></li>
+            <li><span class="check">✓</span><span>Works even if you have no formal work experience</span></li>
+            <li><span class="check">✓</span><span>Editable output you can copy and improve</span></li>
+          </ul>
+        </div>
+        <div class="builder-card">
+          <h3>Build your career snapshot</h3>
+          <p class="form-subtitle">Start with the basics. You can refine your profile later.</p>
+          <form id="profileForm">
+            <div class="form-grid">
+              <div class="field"><label for="fullName">Your name</label><input id="fullName" name="fullName" placeholder="e.g. Alex Sharma" required maxlength="80"></div>
+              <div class="field"><label for="stage">Current stage</label><select id="stage" name="stage" required><option value="">Choose one</option><option>College student</option><option>Recent graduate</option><option>Career switcher</option><option>Looking for an internship</option></select></div>
+              <div class="field"><label for="fieldOfInterest">Field of interest</label><input id="fieldOfInterest" name="fieldOfInterest" placeholder="e.g. Marketing, Operations" required maxlength="100"></div>
+              <div class="field"><label for="goal">Main goal</label><select id="goal" name="goal" required><option value="">Choose your goal</option><option>Get an internship</option><option>Find my first job</option><option>Build my LinkedIn profile</option><option>Create a portfolio</option><option>Prepare for interviews</option></select></div>
+              <div class="field full"><label for="skills">Skills or strengths</label><input id="skills" name="skills" placeholder="e.g. Canva, teamwork, communication" maxlength="250"></div>
+              <div class="field full"><label for="experience">Projects, certificates, or experience (optional)</label><textarea id="experience" name="experience" placeholder="Mention a college project, course, volunteer role, or internship..." maxlength="600"></textarea></div>
+            </div>
+            <button class="btn btn-primary" type="submit">Generate my starter profile <span aria-hidden="true">→</span></button>
+            <p class="privacy-note">Demo only · Your entries stay in this browser session.</p>
+          </form>
+          <div class="result" id="result" aria-live="polite">
+            <h4>Your starter professional summary</h4>
+            <p id="summaryOutput"></p>
+            <div class="result-actions"><button type="button" class="btn btn-primary" id="copySummary">Copy summary</button><button type="button" class="btn btn-outline" id="downloadSummary">Download .txt</button></div>
+            <div style="margin-top:17px"><h4>Suggested next steps</h4><p id="checklistOutput"></p></div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section-soft" id="for-you">
+      <div class="container">
+        <div class="section-heading">
+          <div class="kicker">Made for your next step</div>
+          <h2>Whether you're exploring or applying, start with confidence.</h2>
+          <p>A practical starting point for building a stronger professional presence, one step at a time.</p>
+        </div>
+        <div class="audience-grid">
+          <article class="audience-card"><h3>For college students</h3><p>Make your coursework, clubs, volunteering, and projects count. Learn how to describe the skills you're already building.</p><span class="tag">First resume</span><span class="tag">Internships</span><span class="tag">Student portfolio</span></article>
+          <article class="audience-card"><h3>For freshers and graduates</h3><p>Present your strengths clearly, prepare for interviews, and create consistent content for your job search.</p><span class="tag">Job applications</span><span class="tag">LinkedIn profile</span><span class="tag">Interview practice</span></article>
+        </div>
+      </div>
+    </section>
+
+    <section class="cta">
+      <div class="container">
+        <div class="kicker" style="color:#b9c1ff">Your future is a work in progress</div>
+        <h2>You don't need to have it all figured out to get started.</h2>
+        <p>Start with what you know, highlight what you can do, and keep building from there.</p>
+        <a class="btn" href="#builder">Build your career snapshot <span aria-hidden="true">→</span></a>
+      </div>
+    </section>
+  </main>
+
+  <footer>
+    <div class="container footer-inner">
+      <a class="brand" href="#home"><span class="brand-mark">L</span>LaunchProfile</a>
+      <p>© <span id="year"></span> LaunchProfile. Build your profile. Launch your career.</p>
+      <div class="footer-links"><a href="#features">Features</a><a href="#how-it-works">How it works</a><a href="#builder">Try the demo</a></div>
+    </div>
+  </footer>
+  <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+  <script>
+    const menuToggle = document.getElementById('menuToggle');
+    const navLinks = document.getElementById('navLinks');
+    const profileForm = document.getElementById('profileForm');
+    const result = document.getElementById('result');
+    const summaryOutput = document.getElementById('summaryOutput');
+    const checklistOutput = document.getElementById('checklistOutput');
+    const toast = document.getElementById('toast');
+    let currentSummary = '';
+
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    menuToggle.addEventListener('click', () => {
+      const isOpen = navLinks.classList.toggle('open');
+      menuToggle.setAttribute('aria-expanded', String(isOpen));
+      menuToggle.textContent = isOpen ? '✕' : '☰';
+    });
+    navLinks.querySelectorAll('a').forEach(link => link.addEventListener('click', () => {
+      navLinks.classList.remove('open');
+      menuToggle.setAttribute('aria-expanded', 'false');
+      menuToggle.textContent = '☰';
+    }));
+
+    function showToast(message) {
+      toast.textContent = message;
+      toast.classList.add('show');
+      window.setTimeout(() => toast.classList.remove('show'), 2600);
+    }
+
+    profileForm.addEventListener('submit', event => {
+      event.preventDefault();
+      const name = document.getElementById('fullName').value.trim();
+      const stage = document.getElementById('stage').value;
+      const field = document.getElementById('fieldOfInterest').value.trim();
+      const goal = document.getElementById('goal').value;
+      const skillsRaw = document.getElementById('skills').value.trim();
+      const experience = document.getElementById('experience').value.trim();
+
+      const skills = skillsRaw ? skillsRaw.split(',').map(s => s.trim()).filter(Boolean) : [];
+      let summary = `${name} is a ${stage.toLowerCase()} interested in ${field}. `;
+      if (skills.length) {
+        summary += `Key strengths include ${skills.slice(0, 5).join(', ')}. `;
+      } else {
+        summary += 'Eager to identify and develop practical skills through learning and hands-on opportunities. ';
+      }
+      if (experience) summary += `Relevant projects, learning, or experience include: ${experience.replace(/\s+/g, ' ')}. `;
+      summary += `Currently focused on ${goal.toLowerCase()}, with a commitment to learning, contributing, and growing professionally.`;
+      currentSummary = summary;
+      summaryOutput.textContent = summary;
+
+      const tasks = [
+        'Create or update a one-page resume with accurate details.',
+        'Add 2–3 examples of projects, coursework, or achievements.',
+        'Update your LinkedIn headline and About section.',
+        `Prepare a short introduction related to ${field}.`
+      ];
+      if (goal === 'Create a portfolio') tasks.unshift('Choose 3–5 strong samples and add a short explanation for each.');
+      if (goal === 'Prepare for interviews') tasks.unshift('Practise a 60-second self-introduction and two examples of your strengths.');
+      checklistOutput.textContent = tasks.map((task, index) => `${index + 1}. ${task}`).join('\n');
+      result.classList.add('visible');
+      result.scrollIntoView({ behavior: 'smooth', block: 'nearest' });
+    });
+
+    document.getElementById('copySummary').addEventListener('click', async () => {
+      if (!currentSummary) return;
+      try {
+        await navigator.clipboard.writeText(currentSummary);
+        showToast('Summary copied. Personalise it before using!');
+      } catch (error) {
+        const textArea = document.createElement('textarea');
+        textArea.value = currentSummary;
+        document.body.appendChild(textArea);
+        textArea.select();
+        document.execCommand('copy');
+        textArea.remove();
+        showToast('Summary copied. Personalise it before using!');
+      }
+    });
+
+    document.getElementById('downloadSummary').addEventListener('click', () => {
+      if (!currentSummary) return;
+      const content = `LAUNCHPROFILE — STARTER CAREER SUMMARY\n\n${currentSummary}\n\nSUGGESTED NEXT STEPS\n${checklistOutput.textContent}\n\nNote: Review, verify, and personalise this draft before using it in applications.`;
+      const blob = new Blob([content], { type: 'text/plain;charset=utf-8' });
+      const url = URL.createObjectURL(blob);
+      const anchor = document.createElement('a');
+      anchor.href = url;
+      anchor.download = 'launchprofile-career-snapshot.txt';
+      document.body.appendChild(anchor);
+      anchor.click();
+      anchor.remove();
+      URL.revokeObjectURL(url);
+      showToast('Your career snapshot has been downloaded.');
+    });
+  </script>
+</body>
+</html>
